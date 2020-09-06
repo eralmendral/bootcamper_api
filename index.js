@@ -2,9 +2,16 @@ const express = require('express');
 const app = express();
 const connectDB = require('./config/db');
 
-// configs
+// Configs
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env'})
+
+// Routes
+const bootcamps = require('./routes/bootcamps')
+
+// Mount routers
+app.use('/api/v1/bootcamps', bootcamps);
+
 
 // Body parser
 app.use(express.json());
