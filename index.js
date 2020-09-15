@@ -1,10 +1,22 @@
 const express = require('express');
 const app = express();
 const connectDB = require('./config/db');
+const morgan = require('morgan')
 
 // Configs
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env'})
+
+// Middlewares
+if(process.env.NODE_ENV === 'development'){
+  app.use(morgan('development'));
+}
+
+// Database connection
+connectDB();
+
+// Body parser
+app.use(express.json());
 
 // Routes
 const bootcamps = require('./routes/bootcamps')
@@ -13,11 +25,6 @@ const bootcamps = require('./routes/bootcamps')
 app.use('/api/v1/bootcamps', bootcamps);
 
 
-// Body parser
-app.use(express.json());
-
-// Database connection
-connectDB();
 
 const port = process.env.PORT || 5000;
 
