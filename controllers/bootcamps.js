@@ -4,9 +4,9 @@ const ErrorResponse = require('../utils/ErrorResponse')
 exports.getBootcamps = async (req, res, next) => {
   try {
     const bootcamps = await Bootcamp.find();
-    res.status(200).json({ success: true, data: bootcamps });
+    res.status(200).json({ success: true, data: bootcamps, counts: bootcamps.length });
   } catch(err) {
-    res.status(400).json({ success: false, counts: bootcamps.length });
+    next(err);
   }
 }
 
@@ -15,7 +15,7 @@ exports.createBootcamp = async (req, res, next) => {
     const bootcamp = await Bootcamp.create(req.body);
     res.status(201).json({ success: true, data: bootcamp })
   } catch (err) {
-    res.status(400).json({ success: false })
+    next(err);
   }
 }
 
