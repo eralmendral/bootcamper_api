@@ -6,103 +6,103 @@ const ErrorResponse = require('../utils/ErrorResponse');
 // @route GET api/v1/courses
 // @route GET api/v1/bootcamps/:bootcampId/courses
 exports.getCourses = asyncHandler(async (req, res, next) => {
-  let query;
+    let query;
 
-  if (req.params.bootcampId) {
-    query = Course.find({ bootcamp: req.params.bootcampId })
-  } else {
-    query = Course.find().populate({
-      path: 'Bootcamp',
-      select: 'name description'
-    })
-  }
+    if (req.params.bootcampId) {
+        query = Course.find({ bootcamp: req.params.bootcampId })
+    } else {
+        query = Course.find().populate({
+            path: 'Bootcamp',
+            select: 'name description'
+        })
+    }
 
-  const courses = await query;
+    const courses = await query;
 
-  res.status(200).json({
-    success: true,
-    count: courses.length,
-    data: courses
-  });
+    res.status(200).json({
+        success: true,
+        count: courses.length,
+        data: courses
+    });
 });
 
 
 // @route GET api/v1/courses/:id
 exports.getCourse = asyncHandler(async (req, res, next) => {
-  const course = await Course.findById(req.params.id).populate({
-    path: 'bootcamp',
-    select: 'name description'
-  });
+    const course = await Course.findById(req.params.id).populate({
+        path: 'bootcamp',
+        select: 'name description'
+    });
 
-  if(!course){
-    return next(
-      new ErrorResponse(`No course with the id of ${req.params.id}`),
-      404
-    );
-  }
+    if (!course) {
+        return next(
+            new ErrorResponse(`No course with the id of ${req.params.id}`),
+            404
+        );
+    }
 
-  res.status(200).json({
-    success: true,
-    data: course
-  })
+    res.status(200).json({
+        success: true,
+        data: course
+    })
 
 })
 
 // @route GET api/v1/bootcamps/:bootcampId/courses
 exports.addCourse = asyncHandler(async (req, res, next) => {
-  req.body.bootcamp = req.params.bootcampId;
+    req.body.bootcamp = req.params.bootcampId;
 
-  const bootcamp = await Bootcamp.findById(req.params.bootcampId);
+    const bootcamp = await Bootcamp.findById(req.params.bootcampId);
 
-  if(!bootcamp) {
-    return next(
-      new ErrorResponse(`No bootcamp with the id of ${req.params.bootcampId}`, 404)
-    )
-  }
+    if (!bootcamp) {
+        return next(
+            new ErrorResponse(`No bootcamp with the id of ${req.params.bootcampId}`, 404)
+        )
+    }
 
-  const course = await Course.create(req.body);
+    const course = await Course.create(req.body);
 
-  res.status(200).json({
-    success: true,
-    data: course
-  })
+    res.status(200).json({
+        success: true,
+        data: course
+    })
 })
 
 // @route PUT api/v1/courses/:id
 exports.updateCourse = asyncHandler(async (req, res, next) => {
-  let course = await Course.findById(req.params.id);
+    let course = await Course.findById(req.params.id);
 
-  if(!course) {
-    return next(
-      new ErrorResponse(`No course with the id of ${req.params.id}`, 404)
-    )
-  }
+    if (!course) {
+        return next(
+            new ErrorResponse(`No course with the id of ${req.params.id}`, 404)
+        )
+    }
 
-  course = await Course.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true
-  });
+    course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    });
 
-  res.status(200).json({
-    success: true,
-    data: course
-  })
+    res.status(200).json({
+        success: true,
+        data: course
+    })
 })
 
 // @route DELETE api/v1/courses/:id
 exports.deleteCourse = asyncHandler(async (req, res, next) => {
-  const course = await Course.findById(req.params.id);
+    const course = await Course.findById(req.params.id);
 
-  if(!course) {
-    return next(
-      new ErrorResponse(`No course with the id of ${req.params.id}`, 404)
-    )
-  }
- 
-  await course.remove();
+    if (!course) {
+        return next(
+            new ErrorResponse(`No course with the id of ${req.params.id}`, 404)
+        )
+    }
 
-  res.status(200).json({
-    success: true,
-    data: {}
-  })
+    await course.remove();
+
+    res.status(200).json({
+        success: true,
+        data: {}
+    })
 })

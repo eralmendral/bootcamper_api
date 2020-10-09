@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const connectDB = require('./config/db');
 const morgan = require('morgan');
+const path = require('path');
 const errorHandler = require('./middleware/error');
+const fileupload = require('express-fileupload');
 // Configs
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env'})
@@ -21,6 +23,12 @@ app.use(express.json());
 // Routes
 const bootcamps = require('./routes/bootcamps')
 const courses = require('./routes/courses')
+
+/// File uploading
+app.use(fileupload());
+
+// Set Static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
