@@ -20,7 +20,7 @@ const push = function (command, callback) {
   })
 }
 
-push('git add . && git commit -m "add a script for pushing to repo"', function (err, response) {
+push('git add . && git commit -m "add a script for pushing to repo" && git push origin master', function (err, response) {
   if (!err) {
     console.log("Success...", response);
   } else {
