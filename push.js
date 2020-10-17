@@ -1,11 +1,11 @@
 const { exec } = require('child_process');
 
-let message = 'chore: update';
+let message = "chore: update";
 if (process.argv.length > 2) {
   message = process.argv.slice(2).join(" ");
 }
 
-const command = `git add . && git commit -m "${message}" && git push origin master`;
+const command = `git commit -am "${message}"  && git push origin master`;
 console.log('debug command:', command);
 const push = function (command, callback) {
   exec(command, function (err, stdout, stderr) {
