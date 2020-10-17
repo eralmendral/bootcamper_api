@@ -1,6 +1,7 @@
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/ErrorResponse');
 const User = require('../models/User')
+const sendEmail = require('../utils/sendEmail');
 
 // @route POST api/v1/auth/register
 // @access public
@@ -57,7 +58,7 @@ exports.currentLogin = asyncHandler(async (req, res, next) => {
 // @access Public
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
-  if(!user) {
+  if (!user) {
     return next(new ErrorResponse('User not found with this email.', 404));
   }
 
@@ -65,6 +66,30 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.getResetPasswordToken();
 
   await user.save({ validateBeforeSave: false })
+
+  // Create reset url
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/resetpassword/${resetToken}`;
+
+  const message = `Make a put request this url to reset password: ${resetUrl}`;
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Password reset',
+      message
+    })
+
+    res.status(200).json({ success: true, data: 'Email sent' })
+  } catch (err) {
+    console.log(err);
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false })
+
+    return next(new ErrorResponse(`Password reset email could not be sent.`, 500));
+  }
+
 
   res.status(200).json({
     success: true,
