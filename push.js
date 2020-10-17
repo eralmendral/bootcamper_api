@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-
+const colors = require('colors');
 let message = "chore: update";
 if (process.argv.length > 2) {
   message = process.argv.slice(2).join(" ");
@@ -21,7 +21,8 @@ const push = function (command, callback) {
 
 push(command, function (err, response) {
   if (!err) {
-    console.log("Success push, repo updated...", response);
+    console.log(`Success push, repo updated...`.green);
+    console.log(`Response : ${response}`.green)
   } else {
     console.log("Error", err)
   }
