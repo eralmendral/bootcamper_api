@@ -6,7 +6,6 @@ if (process.argv.length > 2) {
 }
 
 const command = `git commit -am ${message} && git push origin master`;
-console.log('test command:', command);
 
 const push = function (command, callback) {
   exec(command, function (err, stdout, stderr) {
@@ -24,6 +23,6 @@ push('git add . && git commit -m "add a script for pushing to repo" && git push 
   if (!err) {
     console.log("Success...", response);
   } else {
-    console.log("Error". err)
+    console.log("Error", err)
   }
 });
