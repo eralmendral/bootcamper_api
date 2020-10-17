@@ -2,6 +2,7 @@ const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/ErrorResponse');
 const User = require('../models/User')
 const sendEmail = require('../utils/sendEmail');
+const crypto = require('crypto');
 
 // @route POST api/v1/auth/register
 // @access public
@@ -68,7 +69,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   await user.save({ validateBeforeSave: false })
 
   // Create reset url
-  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/resetpassword/${resetToken}`;
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${resetToken}`;
 
   const message = `Make a put request this url to reset password: ${resetUrl}`;
   try {
@@ -95,6 +96,31 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     success: true,
     data: user
   })
+})
+
+
+// @desc Reset Password
+// @route PUT api/v1/auth/resetPassword/:resetToken
+// @access Public
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  // Get hashed token 
+  const resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex');
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() }
+  })
+
+  if(!user) {
+    return next(new ErrorResponse('Invalid token', 400));
+  }
+  
+  // Set new Password
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
+
+  sendTokenResponse(user, 200, res);
 })
 
 
