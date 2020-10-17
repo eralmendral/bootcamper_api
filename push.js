@@ -5,8 +5,8 @@ if (process.argv.length > 2) {
   message = process.argv.slice(2).join(" ");
 }
 
-const command = `git commit -am ${message} && git push origin master`;
-
+const command = `git add . && git commit -m "${message}" && git push origin master`;
+console.log('debug command:', command);
 const push = function (command, callback) {
   exec(command, function (err, stdout, stderr) {
     if (err !== null) {
@@ -19,7 +19,7 @@ const push = function (command, callback) {
   })
 }
 
-push('git add . && git commit -m "add a script for pushing to repo" && git push origin master', function (err, response) {
+push(command, function (err, response) {
   if (!err) {
     console.log("Success...", response);
   } else {
