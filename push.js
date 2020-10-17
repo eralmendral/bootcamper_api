@@ -6,7 +6,6 @@ if (process.argv.length > 2) {
 }
 
 const command = `git commit -am "${message}"  && git push origin master`;
-console.log('debug command:', command);
 const push = function (command, callback) {
   exec(command, function (err, stdout, stderr) {
     if (err !== null) {
