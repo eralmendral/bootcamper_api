@@ -22,7 +22,7 @@ const push = function (command, callback) {
 push(command, function (err, response) {
   if (!err) {
     console.log(`Success push, repo updated...`.green);
-    console.log(`Response : ${response}`.green)
+    console.log(`Response : ${response}`.yellow)
   } else {
     console.log("Error", err)
   }
