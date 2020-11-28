@@ -3,7 +3,6 @@ const router = express.Router();
 const { getBootcamps, createBootcamp, getBootcamp, updateBootcamp, deleteBootcamp, getBootcampInRadius, bootcampPhotoUpload } = require('../controllers/bootcamps');
 
 const { protect, authorize } = require('../middleware/auth');
-
 const advanceResults = require('../middleware/advanceResults');
 const Bootcamp = require('../models/Bootcamp');
 
