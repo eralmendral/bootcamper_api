@@ -4,8 +4,8 @@
 * Manage USERS, COURSES, BOOTCAMPS, AUTHENTICATION, REVIEWS
 
 ## Demo
-<a href="http://54.87.56.162/" target="_blank">demo link</a>
-[](https://i.gyazo.com/5eae87db0192d21b7c71909720e8e009.png)
+<a href="http://54.87.56.162/" target="_blank">View Demo</a>
+![](https://i.gyazo.com/5eae87db0192d21b7c71909720e8e009.png)
 
 ## Usage
 
