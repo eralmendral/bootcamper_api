@@ -15,7 +15,7 @@ and update the values to your own.
 ## Run App
 ```
  # Dev mode
- npm run Dev
+ npm run dev
 
  # Prod
  npm start
