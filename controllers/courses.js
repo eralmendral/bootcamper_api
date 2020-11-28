@@ -7,7 +7,7 @@ const ErrorResponse = require('../utils/ErrorResponse');
 // @route GET api/v1/bootcamps/:bootcampId/courses
 exports.getCourses = asyncHandler(async (req, res, next) => {
     if (req.params.bootcampId) {
-        const courses = Course.find({ bootcamp: req.params.bootcampId })
+        const courses = await Course.find({ bootcamp: req.params.bootcampId })
         return res.status(200).json({
             success: true,
             count: courses.length,

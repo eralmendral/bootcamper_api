@@ -1,5 +1,5 @@
 const express = require('express');
-const { getReviews, getReview } = require('../controllers/reviews');
+const { getReviews, getReview, addReview } = require('../controllers/reviews');
 const Review = require('../models/Review');
 const advanceResults = require('../middleware/advanceResults');
 
@@ -10,7 +10,7 @@ const router = express.Router({ mergeParams: true });
 router.route('/').get(advanceResults(Review, {
   path: 'Bootcamp',
   select: 'name description'
-}), getReviews);
+}), getReviews).post(protect, authorize('user', 'admin'), addReview);
 
 router.route('/:id').get(getReview);
 
