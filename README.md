@@ -4,7 +4,7 @@
 
 
 ## Demo
-<a href="http://54.87.56.162/">demo link</a>
+<a href="http://54.87.56.162/" target="_blank">demo link</a>
 
 ## Usage
 
