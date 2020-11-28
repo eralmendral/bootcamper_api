@@ -7,6 +7,14 @@ const errorHandler = require('./middleware/error');
 const fileupload = require('express-fileupload');
 const cookieParser = require('cookie-parser')
 
+// security
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xssClean = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
+
 // Configs
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env'})
@@ -35,6 +43,18 @@ const reviews = require('./routes/reviews')
 /// File uploading
 app.use(fileupload());
 
+// Security
+app.use(mongoSanitize());   // sanitize data
+app.use(helmet());       // additional security headers
+app.use(xssClean());  // prevent malicious script code injection
+app.use(hpp());      // prevent http param pollution
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 500
+})
+app.use(limiter);
+app.use(cors()); // Enable CORS
+ 
 // Set Static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
