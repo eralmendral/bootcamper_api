@@ -1,7 +1,7 @@
 # Bootcamp API
 
 > Backend API for our bootcamps directory app.
-
+> Manage USERS, COURSES, BOOTCAMPS, AUTHENTICATION, REVIEWS
 
 ## Demo
 <a href="http://54.87.56.162/" target="_blank">demo link</a>
