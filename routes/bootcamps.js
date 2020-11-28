@@ -8,9 +8,9 @@ const Bootcamp = require('../models/Bootcamp');
 
 // Include other route resource
 const courseRouter = require('./courses');
-const reviewRouter = require('./reviews');
+
 router.use('/:bootcampId/courses', courseRouter);
-router.use('/:bootcampId/reviews', reviewRouter);
+
 
 router.route('/radius/:zipcode/:distance').get(getBootcampInRadius);
 router.route('/').get(advanceResults(Bootcamp, 'courses'), getBootcamps).post(protect, authorize('publisher', 'admin'), createBootcamp);
